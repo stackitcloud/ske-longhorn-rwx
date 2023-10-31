@@ -1,0 +1,4 @@
+defaultSettings:
+  backupTarget: s3://<bucket>@<region>/<path>/ # s3://mybucket@eu01/object.storage.eu01.onstackit.cloud/
+  backupTargetCredentialSecret: <secret-name>
+  allowRecurringJobWhileVolumeDetached: true # optional to map volumes if deployment is scaled down during backup

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: enable-iscsid-daemonset
+  namespace: iscsi-node
+  labels:
+    app: enable-iscsid
+    type: daemonset
+spec:
+  selector:
+    matchLabels:
+      app: enable-iscsid
+      type: daemonset
+  template:
+    metadata:
+      labels:
+        app: enable-iscsid
+        type: daemonset
+    spec:
+      hostPID: true
+      containers:
+        - name: enable-iscsid-daemonset
+          image: debian
+          volumeMounts:
+            - name: systemd-config-volume
+              mountPath: /mnt/
+            - mountPath: /host
+              name: noderoot
+          securityContext:
+            privileged: true
+          command: ["/bin/sh", "-c", "--"]
+          args: ["while true; do /mnt/watchdog.sh; done;"]
+      volumes:
+        - name: systemd-config-volume
+          configMap:
+            defaultMode: 0755
+            name: systemd-server-conf
+        - name: systemd-storage-volume
+          emptyDir: {}
+        - name: noderoot
+          hostPath:
+            path: /
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: systemd-server-conf
+  namespace: iscsi-node
+  labels:
+    name: systemd-server-conf
+data:
+  watchdog.sh: |-
+    #!/bin/sh
+    chroot /host /usr/bin/sh <<"EOT"
+    if ! /usr/bin/systemctl is-active --quiet iscsid
+    then
+        echo "Start Serice"
+        /usr/bin/systemctl start iscsid
+    else
+        echo "Service already "$(/usr/bin/systemctl is-active iscsid)
+    fi
+    if ! /usr/bin/systemctl is-enabled --quiet iscsid
+    then
+        echo "Enable Service"
+        /usr/bin/systemctl enable iscsid &> /dev/null
+    else
+        echo "Service already "$(/usr/bin/systemctl is-enabled iscsid)
+    fi
+    EOT
+    sleep 60
