@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: longhorn
+  storageClassName: longhorn-test
   resources:
     requests:
       storage: 10Gi
@@ -28,7 +28,7 @@ spec:
         - containerPort: 80
       resources:
         limits:
-          cpu: 1000M
+          cpu: 1000m
           memory: 1024Mi
   volumes:
     - name: volv
