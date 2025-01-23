@@ -19,7 +19,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: longhorn
+  storageClassName: longhorn-test
   resources:
     requests:
       storage: 10Gi
@@ -54,7 +54,7 @@ spec:
           tty: true
           resources:
             limits:
-              cpu: 1000M
+              cpu: 1000m
               memory: 1024Mi
           volumeMounts:
             - mountPath: /data
@@ -67,7 +67,7 @@ spec:
               name: http
           resources:
             limits:
-              cpu: 1000M
+              cpu: 1000m
               memory: 1024Mi
           volumeMounts:
             - mountPath: /usr/share/nginx/html

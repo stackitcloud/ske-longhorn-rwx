@@ -11,7 +11,6 @@ To enable Read Write Many (RWX) storage on STACKIT SKE clusters follow this guid
 
 First we need to setup an Iscsi watchdog Daemonset that is starting the necessary services on the node.
 ```bash
-kubectl create namespace iscsi-node
 kubectl apply -f enableISCSI.yml
 ```
 

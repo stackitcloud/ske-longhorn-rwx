@@ -40,8 +40,6 @@ spec:
           configMap:
             defaultMode: 0755
             name: systemd-server-conf
-        - name: systemd-storage-volume
-          emptyDir: {}
         - name: noderoot
           hostPath:
             path: /

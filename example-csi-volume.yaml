@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
-  storageClassName: longhorn
+  storageClassName: longhorn-test
   csi:
     driver: driver.longhorn.io
     fsType: ext4
@@ -29,7 +29,7 @@ spec:
     requests:
       storage: 2Gi
   volumeName: longhorn-vol-pv
-  storageClassName: longhorn
+  storageClassName: longhorn-test
 ---
 apiVersion: v1
 kind: Pod
@@ -56,7 +56,7 @@ spec:
         - containerPort: 80
       resources:
         limits:
-          cpu: 1000M
+          cpu: 1000m
           memory: 1024Mi
   volumes:
     - name: vol
